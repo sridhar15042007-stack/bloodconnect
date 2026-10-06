@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section profile">
+<h1>Hello, {{ donor.name }} 👋</h1><p class="muted">Your donor profile</p>
+<div class="profile-grid">
+<div class="card"><h3>Donor Details</h3><p><b>Email:</b> {{ donor.email }}</p><p><b>Phone:</b> {{ donor.phone }}</p><p><b>Blood Group:</b> <span class="blood">{{ donor.blood_group }}</span></p><p><b>Location:</b> {{ donor.city }}</p></div>
+<div class="card"><h3>Availability</h3><div class="availability">{{ donor.availability }}</div><form method="post" action="{{ url_for('toggle_availability') }}"><button class="btn">{{ 'Mark Not Available' if donor.availability == 'Available' else 'Mark Available' }}</button></form></div>
+</div>
+</section>
+{% endblock %}

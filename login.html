@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-page"><form class="form-card" method="post">
+<h1>Welcome back</h1><p class="muted">Login to manage your donor profile.</p>
+<label>Login as
+<select name="role" required>
+<option value="user">User</option>
+<option value="admin">Admin</option>
+</select>
+</label>
+<label>Email<input type="email" name="email" required></label>
+<label>Password<input type="password" name="password" required></label>
+<button class="btn full">Login</button>
+<p class="center">New donor? <a href="{{ url_for('register') }}">Register</a></p>
+<p class="center muted">Admin demo: admin@bloodconnect.com / admin123</p>
+</form></div>
+{% endblock %}

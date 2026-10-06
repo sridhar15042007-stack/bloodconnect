@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+<h1>Find a Blood Donor</h1><p class="muted">Search available donors by blood group and city.</p>
+<form class="searchbar" method="get">
+<select name="blood_group"><option value="">All Blood Groups</option>{% for g in ['A+','A-','B+','B-','AB+','AB-','O+','O-'] %}<option {% if blood==g %}selected{% endif %}>{{g}}</option>{% endfor %}</select>
+<input name="city" value="{{ city }}" placeholder="City / Location">
+<button class="btn">Search</button>
+</form>
+<div class="grid">
+{% for d in donors %}
+<div class="card donor-card">
+<div class="avatar">🩸</div><div><h3>{{ d.name }}</h3><p>{{ d.city }}</p><p>📞 {{ d.phone }}</p></div>
+<strong class="blood">{{ d.blood_group }}</strong><span class="status">● Available</span>
+</div>
+{% else %}<div class="empty">No matching available donors found.</div>{% endfor %}
+</div>
+</section>
+{% endblock %}

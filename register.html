@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-page"><form class="form-card" method="post">
+<h1>Become a Blood Donor</h1><p class="muted">Create your BloodConnect donor account.</p>
+<label>Full Name<input name="name" required></label>
+<label>Email<input type="email" name="email" required></label>
+<label>Password<input type="password" name="password" required></label>
+<div class="form-grid">
+<label>Blood Group<select name="blood_group" required><option value="">Select</option>{% for g in ['A+','A-','B+','B-','AB+','AB-','O+','O-'] %}<option>{{g}}</option>{% endfor %}</select></label>
+<label>Phone<input name="phone" required></label>
+</div>
+<label>City / Location<input name="city" placeholder="e.g. Chennai" required></label>
+<button class="btn full">Register</button>
+<p class="center">Already registered? <a href="{{ url_for('login') }}">Login</a></p>
+</form></div>
+{% endblock %}
