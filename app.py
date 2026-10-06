@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import sqlite3, os
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='.')
 app.secret_key = "bloodconnect-secret-key"
 DB = os.path.join(os.path.dirname(os.path.abspath(__file__)), "bloodconnect.db")
 
