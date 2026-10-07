@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BloodConnect</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' role='img' aria-label='BloodConnect'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23c62828'/%3E%3Ccircle cx='32' cy='32' r='26' fill='none' stroke='%23ef9a9a' stroke-width='1.5'/%3E%3Ccircle cx='4' cy='32' r='2.6' fill='%23fff'/%3E%3Ccircle cx='60' cy='32' r='2.6' fill='%23fff'/%3E%3Cpath d='M32 13C32 13 19 26 19 35a13 13 0 0 0 26 0C45 26 32 13 32 13Z' fill='%23fff'/%3E%3Crect x='29.75' y='31.5' width='4.5' height='11' rx='1' fill='%23c62828'/%3E%3Crect x='26.5' y='34.75' width='11' height='4.5' rx='1' fill='%23c62828'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ NAVBAR (links are filled in by script.js) ============ -->
+<nav>
+  <a class="brand" href="#/" aria-label="BloodConnect home">
+    <!-- logo (light version; dark badge and icon are on the #/logo page) -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 56" role="img" aria-label="BloodConnect">
+      <g transform="scale(.875)">
+        <circle cx="32" cy="32" r="30" fill="#c62828"/>
+        <circle cx="32" cy="32" r="26" fill="none" stroke="#ef9a9a" stroke-width="1.5"/>
+        <circle cx="4" cy="32" r="2.6" fill="#fff"/>
+        <circle cx="60" cy="32" r="2.6" fill="#fff"/>
+        <path d="M32 13C32 13 19 26 19 35a13 13 0 0 0 26 0C45 26 32 13 32 13Z" fill="#fff"/>
+        <rect x="29.75" y="31.5" width="4.5" height="11" rx="1" fill="#c62828"/>
+        <rect x="26.5" y="34.75" width="11" height="4.5" rx="1" fill="#c62828"/>
+      </g>
+      <text x="68" y="38" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="30" font-weight="800" textLength="192" lengthAdjust="spacingAndGlyphs">
+        <tspan fill="#c62828">Blood</tspan><tspan fill="#151f33">Connect</tspan>
+      </text>
+    </svg>
+  </a>
+  <div class="navlinks" id="navlinks"></div>
+</nav>
+
+<!-- ============ POPUP MESSAGES ============ -->
+<div class="flash-wrap" id="flash"></div>
+
+<main>
+
+  <!-- ============ SPLASH (first page: the logo) ============ -->
+  <div class="page" id="page-splash" hidden>
+    <section class="splash">
+      <svg class="splash-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 260" role="img" aria-label="BloodConnect"><rect width="320" height="260" rx="18" fill="#151f33"/><g transform="translate(30 102) scale(.875)"><circle cx="32" cy="32" r="30" fill="#c62828"/><circle cx="32" cy="32" r="26" fill="none" stroke="#ef9a9a" stroke-width="1.5"/><circle cx="4" cy="32" r="2.6" fill="#fff"/><circle cx="60" cy="32" r="2.6" fill="#fff"/><path d="M32 13C32 13 19 26 19 35a13 13 0 0 0 26 0C45 26 32 13 32 13Z" fill="#fff"/><rect x="29.75" y="31.5" width="4.5" height="11" rx="1" fill="#c62828"/><rect x="26.5" y="34.75" width="11" height="4.5" rx="1" fill="#c62828"/></g><text x="98" y="140" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="30" font-weight="800" textLength="192" lengthAdjust="spacingAndGlyphs"><tspan fill="#ff8a80">Blood</tspan><tspan fill="#fff">Connect</tspan></text></svg>
+      <p>Every drop of blood can save a life.</p>
+      <a class="btn" href="#/login">Get Started →</a>
+      <div class="splash-bar"><span></span></div>
+    </section>
+  </div>
+
+  <!-- ============ HOME ============ -->
+  <div class="page" id="page-home" hidden>
+    <section class="hero">
+      <div>
+        <span class="badge">Emergency Blood Support</span>
+        <h1>Every drop of blood can <span>save a life.</span></h1>
+        <p>BloodConnect helps patients find available blood donors quickly based on blood group and location.</p>
+        <div class="actions">
+          <a class="btn" href="#/search">Find a Donor</a>
+          <a class="btn outline" href="#/request">Request Blood</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="bigdrop">🩸</div>
+        <h3>Be someone's reason to smile.</h3>
+        <p>Register as a donor and keep your availability updated.</p>
+        <a href="#/register">Register now →</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Available Donors</h2>
+      <p class="muted">Recently registered donors who are currently available.</p>
+      <div class="grid" id="home-donors"></div>
+    </section>
+
+    <section class="section two">
+      <div>
+        <h2>Recent Blood Requests</h2>
+        <div id="home-requests"></div>
+      </div>
+      <div class="map-card">
+        <h2>Blood Request Locations</h2>
+        <div id="map"></div>
+        <small class="muted">Recent requests are shown using their city locations.</small>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ FIND DONOR ============ -->
+  <div class="page" id="page-search" hidden>
+    <section class="section">
+      <h1>Find a Blood Donor</h1>
+      <p class="muted">Search available donors by blood group and city.</p>
+      <form class="searchbar" id="search-form">
+        <select name="blood_group" data-blood data-placeholder="All Blood Groups"></select>
+        <input name="city" placeholder="City / Location">
+        <button class="btn">Search</button>
+      </form>
+      <div class="grid" id="search-results"></div>
+    </section>
+  </div>
+
+  <!-- ============ REQUEST BLOOD ============ -->
+  <div class="page" id="page-request" hidden>
+    <div class="form-page">
+      <form class="form-card" id="request-form">
+        <h1>Emergency Blood Request</h1>
+        <p class="muted">Submit a request so matching donors can be identified.</p>
+        <div class="form-grid">
+          <label>Requester Name<input name="requester_name" required></label>
+          <label>Phone<input name="phone" required></label>
+        </div>
+        <div class="form-grid">
+          <label>Blood Group<select name="blood_group" data-blood data-placeholder="Select" required></select></label>
+          <label>Units Required<input type="number" name="units" min="1" max="20" required></label>
+        </div>
+        <label>Hospital / Medical Center<input name="hospital" required></label>
+        <label>City / Location<input name="city" required></label>
+        <label>Urgency
+          <select name="urgency">
+            <option>Emergency</option>
+            <option>High</option>
+            <option>Normal</option>
+          </select>
+        </label>
+        <button class="btn full">Submit Blood Request</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ REQUEST DETAILS ============ -->
+  <div class="page" id="page-request-details" hidden>
+    <section class="section">
+      <a href="#/home">← Back</a>
+      <div class="details-grid">
+        <div class="card" id="request-details"></div>
+        <div class="map-card">
+          <h2>📍 Requester Location</h2>
+          <p class="muted">Google Maps</p>
+          <div id="requester-map"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ SIGN IN / SIGN UP (second page) ============ -->
+  <div class="page" id="page-sign" hidden>
+    <div class="form-page">
+      <div class="form-card sign-card">
+        <div class="tabs">
+          <a class="tab" id="tab-in" href="#/login">Sign In</a>
+          <a class="tab" id="tab-up" href="#/register">Sign Up</a>
+        </div>
+
+        <form id="login-form">
+          <h1>Welcome back</h1>
+          <p class="muted">Sign in to open your dashboard.</p>
+          <label>Sign in as
+            <select name="role" required>
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </label>
+          <label>Email<input type="email" name="email" required></label>
+          <label>Password<input type="password" name="password" required></label>
+          <button class="btn full">Sign In</button>
+          <p class="center">No account yet? <a href="#/register">Sign Up</a></p>
+          <p class="center muted">Admin demo: admin@bloodconnect.com / admin123</p>
+        </form>
+
+        <form id="register-form" hidden>
+          <h1>Become a Blood Donor</h1>
+          <p class="muted">Create your BloodConnect donor account.</p>
+          <label>Full Name<input name="name" required></label>
+          <label>Email<input type="email" name="email" required></label>
+          <label>Password<input type="password" name="password" required></label>
+          <div class="form-grid">
+            <label>Blood Group<select name="blood_group" data-blood data-placeholder="Select" required></select></label>
+            <label>Phone<input name="phone" required></label>
+          </div>
+          <label>City / Location<input name="city" placeholder="e.g. Chennai" required></label>
+          <button class="btn full">Sign Up</button>
+          <p class="center">Already have an account? <a href="#/login">Sign In</a></p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ DONOR DASHBOARD ============ -->
+  <div class="page" id="page-profile" hidden>
+    <section class="section profile" id="profile-content"></section>
+  </div>
+
+  <!-- ============ ADMIN DASHBOARD ============ -->
+  <div class="page" id="page-admin" hidden>
+    <section class="section">
+      <h1>Admin Dashboard</h1>
+      <p class="muted">Manage donors and blood requests.</p>
+      <div class="stats" id="admin-stats"></div>
+
+      <div class="table-card">
+        <h2>Blood Requests</h2>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>ID</th><th>Requester</th><th>Blood</th><th>Hospital</th><th>City</th><th>Urgency</th><th>Status</th><th>Action</th></tr>
+            </thead>
+            <tbody id="admin-requests"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <h2>Donors</h2>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Name</th><th>Blood</th><th>Phone</th><th>City</th><th>Availability</th></tr>
+            </thead>
+            <tbody id="admin-donors"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ BRAND LOGOS ============ -->
+  <div class="page" id="page-logo" hidden>
+    <section class="section">
+      <h1>BloodConnect logo</h1>
+      <p class="muted">Use the dark badge on dark backgrounds, the light version on white pages, and the icon alone for favicons and small spaces.</p>
+
+      <div class="grid">
+        <div class="card logo-card">
+          <div class="logo-stage"><svg id="logo-dark" class="logo-dark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 260" role="img" aria-label="BloodConnect dark badge"><rect width="320" height="260" rx="18" fill="#151f33"/><g transform="translate(30 102) scale(.875)"><circle cx="32" cy="32" r="30" fill="#c62828"/><circle cx="32" cy="32" r="26" fill="none" stroke="#ef9a9a" stroke-width="1.5"/><circle cx="4" cy="32" r="2.6" fill="#fff"/><circle cx="60" cy="32" r="2.6" fill="#fff"/><path d="M32 13C32 13 19 26 19 35a13 13 0 0 0 26 0C45 26 32 13 32 13Z" fill="#fff"/><rect x="29.75" y="31.5" width="4.5" height="11" rx="1" fill="#c62828"/><rect x="26.5" y="34.75" width="11" height="4.5" rx="1" fill="#c62828"/></g><text x="98" y="140" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="30" font-weight="800" textLength="192" lengthAdjust="spacingAndGlyphs"><tspan fill="#ff8a80">Blood</tspan><tspan fill="#fff">Connect</tspan></text></svg></div>
+          <h3>Dark badge</h3>
+          <button class="link-btn" data-download="logo-dark.svg" data-source="logo-dark">Download SVG</button>
+        </div>
+        <div class="card logo-card">
+          <div class="logo-stage"><svg id="logo-light" class="logo-light" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 56" role="img" aria-label="BloodConnect light logo"><g transform="scale(.875)"><circle cx="32" cy="32" r="30" fill="#c62828"/><circle cx="32" cy="32" r="26" fill="none" stroke="#ef9a9a" stroke-width="1.5"/><circle cx="4" cy="32" r="2.6" fill="#fff"/><circle cx="60" cy="32" r="2.6" fill="#fff"/><path d="M32 13C32 13 19 26 19 35a13 13 0 0 0 26 0C45 26 32 13 32 13Z" fill="#fff"/><rect x="29.75" y="31.5" width="4.5" height="11" rx="1" fill="#c62828"/><rect x="26.5" y="34.75" width="11" height="4.5" rx="1" fill="#c62828"/></g><text x="68" y="38" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-size="30" font-weight="800" textLength="192" lengthAdjust="spacingAndGlyphs"><tspan fill="#c62828">Blood</tspan><tspan fill="#151f33">Connect</tspan></text></svg></div>
+          <h3>Light</h3>
+          <button class="link-btn" data-download="logo-light.svg" data-source="logo-light">Download SVG</button>
+        </div>
+        <div class="card logo-card">
+          <div class="logo-stage"><svg id="logo-icon" class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="BloodConnect icon"><circle cx="32" cy="32" r="30" fill="#c62828"/><circle cx="32" cy="32" r="26" fill="none" stroke="#ef9a9a" stroke-width="1.5"/><circle cx="4" cy="32" r="2.6" fill="#fff"/><circle cx="60" cy="32" r="2.6" fill="#fff"/><path d="M32 13C32 13 19 26 19 35a13 13 0 0 0 26 0C45 26 32 13 32 13Z" fill="#fff"/><rect x="29.75" y="31.5" width="4.5" height="11" rx="1" fill="#c62828"/><rect x="26.5" y="34.75" width="11" height="4.5" rx="1" fill="#c62828"/></svg></div>
+          <h3>Icon only</h3>
+          <button class="link-btn" data-download="logo-icon.svg" data-source="logo-icon">Download SVG</button>
+        </div>
+      </div>
+
+      <h2 class="logo-h">Colors</h2>
+      <div class="swatches">
+        <div class="swatch" style="background:#c62828;color:#fff"><b>Blood red</b>#c62828</div>
+        <div class="swatch" style="background:#b71c1c;color:#fff"><b>Deep red</b>#b71c1c</div>
+        <div class="swatch" style="background:#ff8a80;color:#151f33"><b>Coral</b>#ff8a80</div>
+        <div class="swatch" style="background:#151f33;color:#fff"><b>Navy</b>#151f33</div>
+      </div>
+
+      <h2 class="logo-h">Use it in a page</h2>
+      <pre class="logo-code">&lt;img src="logo-light.svg" alt="BloodConnect" height="40"&gt;</pre>
+    </section>
+  </div>
+
+  <!-- ============ 404 ============ -->
+  <div class="page" id="page-notfound" hidden>
+    <section class="section center">
+      <h1>Page not found</h1>
+      <p class="muted">That page does not exist.</p>
+      <a class="btn" href="#/">Go home</a>
+    </section>
+  </div>
+
+</main>
+
+<footer>© 2026 BloodConnect • Donate Blood • Save Lives • <a href="#/logo">Brand logos</a></footer>
+
+<script src="script.js"></script>
+</body>
+</html>
